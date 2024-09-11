@@ -9,8 +9,15 @@ export class HttpErrorController {
   async getError(
     @Param('errorCode') errorCode: string,
     @Query('timeout') timeout: string,
+    @Query('errorMessage') errorMessage: string,
+    @Query('statusText') statusText: string,
   ): Promise<void> {
     const code = errorCode || '404';
-    return await this.appService.getError(code, timeout);
+    return await this.appService.getError(
+      code,
+      timeout,
+      errorMessage,
+      statusText,
+    );
   }
 }

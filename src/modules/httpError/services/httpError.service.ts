@@ -3,15 +3,28 @@ import { getHttpStatusByCode } from 'src/utils/statusCodes';
 
 @Injectable()
 export class HttpErrorService {
-  async getError(errorCode: string, timeout: string): Promise<void> {
+  async getError(
+    errorCode: string,
+    timeout: string,
+    errorMessage: string,
+    statusText: string,
+  ): Promise<void> {
     const code: number = parseInt(errorCode, 10);
     const t = parseInt(timeout, 10) || 0;
 
     if (Object.values(HttpStatus).includes(code)) {
+      const responseBody: Record<string, any> = {
+        status: code,
+        statusText: statusText ?? getHttpStatusByCode(code),
+        ok: code === 200,
+      };
+      if (errorMessage) {
+        responseBody.errorMessage = errorMessage;
+      }
       if (t > 0) {
         await this.#delay(t);
       }
-      throw new HttpException(getHttpStatusByCode(code), code);
+      throw new HttpException(responseBody, code);
     }
 
     throw new HttpException(getHttpStatusByCode(404), HttpStatus.NOT_FOUND);
