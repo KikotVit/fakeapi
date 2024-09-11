@@ -16,7 +16,6 @@ export class HttpErrorService {
       const responseBody: Record<string, any> = {
         status: code,
         statusText: statusText ?? getHttpStatusByCode(code),
-        ok: code === 200,
       };
       if (errorMessage) {
         responseBody.errorMessage = errorMessage;
