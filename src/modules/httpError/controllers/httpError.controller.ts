@@ -8,16 +8,9 @@ export class HttpErrorController {
   @Get('/httpError/:errorCode?')
   async getError(
     @Param('errorCode') errorCode: string,
-    @Query('timeout') timeout: string,
-    @Query('errorMessage') errorMessage: string,
-    @Query('statusText') statusText: string,
+    @Query() query: Record<string, any>,
   ): Promise<void> {
     const code = errorCode || '404';
-    return await this.appService.getError(
-      code,
-      timeout,
-      errorMessage,
-      statusText,
-    );
+    return await this.appService.getError(code, query);
   }
 }
